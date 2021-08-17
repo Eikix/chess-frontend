@@ -31,7 +31,7 @@ const Home = () => {
   return (
     <>
     <div className="flex flex-col items-center justify-center">
-      <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl mt-6 border-b shadow-sm">Choooss</h1>
+      <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl mt-6 border-b shadow-sm">Eiki's Chess</h1>
 
       {(chess && chess?.game_over()) && 
         <div className="text-3xl cursor-pointer bg-blue-100 text-gray-800 rounded-full p-6 font-light text-center mt-6 animate-pulse">
