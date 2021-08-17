@@ -33,7 +33,7 @@ const Board = ({chessMatrix, chess, isWhiteTurn, handleTurnChange}) => {
         if (colType === null) return;
         if ((colColor === "b" && isWhiteTurn) || (colColor === "w" && !isWhiteTurn)) return;
         const startCoords = convertRowColIndexToCoord(rowIndex, colIndex);
-        const moves = chess.moves({square: startCoords});
+        const moves = chess.moves({square: startCoords, verbose: true});
         if (!pieceIsMoving.isMoving) setPieceIsMoving({
             isMoving: true,
             pieceType: colType?.toString().toUpperCase(),
@@ -44,7 +44,7 @@ const Board = ({chessMatrix, chess, isWhiteTurn, handleTurnChange}) => {
         console.log("Allowed moves: ", moves);
     }
 
-    const endMove = (rowIndex, colIndex, colType) => {
+    const endMove = (rowIndex, colIndex) => {
         const endCoords = convertRowColIndexToCoord(rowIndex, colIndex);
         if (!pieceIsMoving.isMoving) return;
         if (pieceIsMoving.isMoving) {
@@ -66,6 +66,19 @@ const Board = ({chessMatrix, chess, isWhiteTurn, handleTurnChange}) => {
             }
         }
     }
+
+    const getTileColor = (rowIndex, colIndex) => {
+        let tileColor;
+        if (pieceIsMoving.isMoving && pieceIsMoving.allowedMoves.length > 0) {
+            const allowedCoordArray = [];
+            pieceIsMoving.allowedMoves.map(allowedMove => {allowedCoordArray.push(allowedMove.to)})
+            tileColor = (allowedCoordArray.includes(convertRowColIndexToCoord(rowIndex, colIndex))) ? "green" : ( ( (colIndex+(rowIndex % 2)) % 2 === 0) ) ? "gray" : "blue";
+        } else {
+            tileColor = ( ( (colIndex+(rowIndex % 2)) % 2 === 0) ) ? "gray" : "blue";
+        }
+        return tileColor;
+        
+    }
     return (
         <>
         <h1 className="text-center text-lg md:text-xl lg:text-2xl xl:text-2xl mt-6 border-b shadow-sm">{isWhiteTurn ? "White's turn" : "Black's turn"}</h1>
@@ -73,7 +86,7 @@ const Board = ({chessMatrix, chess, isWhiteTurn, handleTurnChange}) => {
             {chessMatrix && chessMatrix.map((row, rowIndex) => {
                 return (
                     row.map((col, colIndex) => {
-                        const tileColor = ( ( (colIndex+(rowIndex % 2)) % 2 === 0) ) ? "gray" : "blue"
+                        const tileColor = getTileColor(rowIndex, colIndex);
                         return (
                             <div onClick={() => moveStartEnd(rowIndex, colIndex, col?.type, col?.color)}>
                                 <Tile  key={`row${rowIndex}col${colIndex}`} color={tileColor}>
