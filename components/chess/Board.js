@@ -68,7 +68,7 @@ const Board = ({chessMatrix, chess, isWhiteTurn, handleTurnChange}) => {
     }
     return (
         <>
-        <h1 className="text-center">{isWhiteTurn ? "White's turn" : "Black's turn"}</h1>
+        <h1 className="text-center text-lg md:text-xl lg:text-2xl xl:text-2xl mt-6 border-b shadow-sm">{isWhiteTurn ? "White's turn" : "Black's turn"}</h1>
         <BoardLayout >
             {chessMatrix && chessMatrix.map((row, rowIndex) => {
                 return (
@@ -76,8 +76,8 @@ const Board = ({chessMatrix, chess, isWhiteTurn, handleTurnChange}) => {
                         const tileColor = ( ( (colIndex+(rowIndex % 2)) % 2 === 0) ) ? "gray" : "blue"
                         return (
                             <div onClick={() => moveStartEnd(rowIndex, colIndex, col?.type, col?.color)}>
-                                <Tile color={tileColor}>
-                                    {col && <Piece key={`row${rowIndex}col${colIndex}`} pieceType = {col?.type} pieceColor = {col?.color}/>}
+                                <Tile  key={`row${rowIndex}col${colIndex}`} color={tileColor}>
+                                    {col && <Piece pieceType = {col?.type} pieceColor = {col?.color}/>}
                                 </Tile>
                             </div>
                         )                  
