@@ -1,6 +1,6 @@
 const Tile = ({color, children}) => {
     return (
-        <div className={`flex justify-center cursor-pointer items-center h-4 w-4 md:h-8 md:w-8 lg:h-12 lg:w-12 xl:h-16 xl:w-16 border bg-${color}-100`}>
+        <div className={`flex justify-center cursor-pointer items-center h-8 w-8 md:h-12 md:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 border bg-${color}-100`}>
             {children}
         </div>
     )
