@@ -39,7 +39,7 @@ const Home = () => {
         </div>
       }
 
-      {!chessBoard && <button className="bg-blue-50 p-3 lg:p-6 xl:p-8 focus-within:text-center font-light text-xl md:text-3xl lg:text-4xl rounded-lg mt-6 md:mt-24 lg:mt-48" onClick={loadChess}>Load state of game</button>}
+      {!chessBoard && <button className="bg-blue-50 p-3 lg:p-6 xl:p-8 focus-within:text-center font-light text-xl md:text-3xl lg:text-4xl rounded-lg mt-6 md:mt-24 lg:mt-48" onClick={loadChess}>Start game</button>}
       {chessBoard && <Board chessMatrix={chessBoard} chess={chess} isWhiteTurn={isWhiteTurn} handleTurnChange={handleTurnChange}/>}
 
 
