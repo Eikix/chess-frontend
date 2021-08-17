@@ -62,7 +62,7 @@ const Board = ({chessMatrix, chess, isWhiteTurn, handleTurnChange}) => {
                 console.log("Chess board: ", chess.board());
             } else {
                 setPieceIsMoving(notMoving);
-                alert("Move not allowed");
+                console.log("Move not allowed");
             }
         }
     }
@@ -72,7 +72,7 @@ const Board = ({chessMatrix, chess, isWhiteTurn, handleTurnChange}) => {
         if (pieceIsMoving.isMoving && pieceIsMoving.allowedMoves.length > 0) {
             const allowedCoordArray = [];
             pieceIsMoving.allowedMoves.map(allowedMove => {allowedCoordArray.push(allowedMove.to)})
-            tileColor = (allowedCoordArray.includes(convertRowColIndexToCoord(rowIndex, colIndex))) ? "green" : ( ( (colIndex+(rowIndex % 2)) % 2 === 0) ) ? "gray" : "blue";
+            tileColor = (allowedCoordArray.includes(convertRowColIndexToCoord(rowIndex, colIndex))) ? "purple" : ( ( (colIndex+(rowIndex % 2)) % 2 === 0) ) ? "gray" : "blue";
         } else {
             tileColor = ( ( (colIndex+(rowIndex % 2)) % 2 === 0) ) ? "gray" : "blue";
         }
