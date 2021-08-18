@@ -15,11 +15,19 @@ import checkSfx from "../../public/sounds/isInCheck.mp3";
 const Board = ({chessMatrix, chess, isWhiteTurn, handleTurnChange, playerColor}) => {
 
     // Loading sound effects
-    const [playMoveSound] = useSound(moveSfx);
+    const [moveSound] = useSound(moveSfx);
     const [castleSound] = useSound(castleSfx);
     const [captureSound] = useSound(captureSfx);
     const [gameOverSound] = useSound(gameOverSfx);
     const [checkSound] = useSound(checkSfx);
+    const handleSoundOnMove = (moveFlag) => {
+        const moveSounds = ["n", "b", "p", "pc"];
+        const castleSounds = ["k", "q"];
+        const captureSounds = ["e","c"];
+        if (moveSounds.includes(moveFlag)) moveSound();
+        if (castleSounds.includes(moveFlag)) castleSound();
+        if (captureSounds.includes(moveFlag)) captureSound();
+    } 
 
 
     const notMoving = {
@@ -81,7 +89,7 @@ const Board = ({chessMatrix, chess, isWhiteTurn, handleTurnChange, playerColor})
                 socket.emit("game_update", potentialMove);
                 setPieceIsMoving(notMoving);
                 handleTurnChange();
-                playMoveSound();
+                if (move.flags) handleSoundOnMove(move.flags);
                 console.log("Move : ", move);
             } else {
                 setPieceIsMoving(notMoving);
