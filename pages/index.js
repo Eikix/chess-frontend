@@ -1,7 +1,7 @@
 import Board from "../components/chess/Board"
 import * as Chess from "chess.js";
 import { useEffect, useState } from "react";
-import { useSocketContext } from "../components/chess/SocketContext";
+import {socket} from "../utils/socket/socket";
 
 
 
@@ -10,7 +10,7 @@ const Home = () => {
   const [chessBoard, setChessBoard] = useState([]);
   const [isWhiteTurn, setWhiteTurn] = useState(true);
   const [roomId, setRoomId] = useState("");
-  const socket = useSocketContext();
+  const [playerColor, setPlayerColor] = useState(null);
 
   const handleTurnChange = () => {
     setWhiteTurn(prevTurn => !prevTurn);
@@ -33,17 +33,21 @@ const Home = () => {
     });
   }, [chess, isWhiteTurn]);
 
-  socket.on("game_start", res => {
-    console.log("Game Starting: ", chess);
-    if (!res.error && chess === undefined) {
-      const newChess = new Chess();
-      setChess(newChess);
-    }
-  });
+  useEffect(() => {
+    socket.on("game_start", res => {
+      console.log("Game Starting: ", chess);
+      if (!res.error && chess === undefined) {
+        const newChess = new Chess();
+        setChess(newChess);
+      }
+    });
 
-  socket.on("on_join", msg => {
-    console.log(msg);
-  });
+    socket.on("on_join", msg => {
+      console.log(msg);
+      setPlayerColor(msg.color);
+    });
+  }, [])
+  
 
 
   return (
@@ -64,7 +68,7 @@ const Home = () => {
               <button type="submit" className="bg-blue-50 p-3 lg:p-6 xl:p-8 rounded-lg ">Join Room</button>
             </form>
             }
-          {(chess && chessBoard) && <Board chessMatrix={chessBoard} chess={chess} isWhiteTurn={isWhiteTurn} handleTurnChange={handleTurnChange}/>}
+          {(chess && chessBoard) && <Board chessMatrix={chessBoard} chess={chess} isWhiteTurn={isWhiteTurn} handleTurnChange={handleTurnChange} playerColor={playerColor}/>}
 
 
           {/* {console.log(chess)}

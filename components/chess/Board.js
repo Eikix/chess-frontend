@@ -1,11 +1,27 @@
-import { useState } from "react"
-import { useSocketContext } from "./SocketContext"
-import BoardLayout from "./BoardLayout"
-import Piece from "./Piece"
-import Tile from "./Tile"
+import { useState, useEffect } from "react";
+import BoardLayout from "./BoardLayout";
+import Piece from "./Piece";
+import Tile from "./Tile";
+import {socket} from "../../utils/socket/socket";
 
-const Board = ({chessMatrix, chess, isWhiteTurn, handleTurnChange}) => {
-    const socket = useSocketContext();
+// Handling Sound Effects
+import useSound from "use-sound";
+import moveSfx from "../../public/sounds/move.mp3";
+import castleSfx from "../../public/sounds/castling.mp3";
+import captureSfx from "../../public/sounds/capture.mp3";
+import gameOverSfx from "../../public/sounds/gameOver.mp3";
+import checkSfx from "../../public/sounds/isInCheck.mp3";
+
+const Board = ({chessMatrix, chess, isWhiteTurn, handleTurnChange, playerColor}) => {
+
+    // Loading sound effects
+    const [playMoveSound] = useSound(moveSfx);
+    const [castleSound] = useSound(castleSfx);
+    const [captureSound] = useSound(captureSfx);
+    const [gameOverSound] = useSound(gameOverSfx);
+    const [checkSound] = useSound(checkSfx);
+
+
     const notMoving = {
         isMoving: false,
         pieceType: null,
@@ -31,6 +47,10 @@ const Board = ({chessMatrix, chess, isWhiteTurn, handleTurnChange}) => {
 
 
     const startMove = (rowIndex, colIndex, colType, colColor) => {
+        if (playerColor === "Black" && isWhiteTurn) return;
+        if (playerColor === "White" && !isWhiteTurn) return;
+        if (playerColor === "Black" && colColor === "w") return;
+        if (playerColor === "White" && colColor === "b") return;
         if (colType === null) return;
         if ((colColor === "b" && isWhiteTurn) || (colColor === "w" && !isWhiteTurn)) return;
         const startCoords = convertRowColIndexToCoord(rowIndex, colIndex);
@@ -61,6 +81,7 @@ const Board = ({chessMatrix, chess, isWhiteTurn, handleTurnChange}) => {
                 socket.emit("game_update", potentialMove);
                 setPieceIsMoving(notMoving);
                 handleTurnChange();
+                playMoveSound();
                 console.log("Move : ", move);
             } else {
                 setPieceIsMoving(notMoving);
@@ -91,12 +112,17 @@ const Board = ({chessMatrix, chess, isWhiteTurn, handleTurnChange}) => {
         }
     }
 
-    socket.on("on_game_update", playerMove => {
-        handleGameUpdate(playerMove);
-    });
+    useEffect(() => {
+        socket.on("on_game_update", playerMove => {
+         handleGameUpdate(playerMove);
+        });
+    }, []);
+
+ 
     return (
         <>
-        <h1 className="text-center text-lg md:text-xl lg:text-2xl xl:text-2xl mt-6 border-b shadow-sm">{isWhiteTurn ? "White's turn" : "Black's turn"}</h1>
+        <h3 className="text-center text-lg md:text-xl lg:text-2xl xl:text-2xl mt-6 border-b shadow-sm">{isWhiteTurn ? "White's turn" : "Black's turn"}</h3>
+        <h3 className="text-center text-md md:text-lg lg:text-xl xl:text-xl mt-3 border-b shadow-sm">{`You are playing ${playerColor}`}</h3>
         <BoardLayout >
             {chessMatrix && chessMatrix.map((row, rowIndex) => {
                 return (

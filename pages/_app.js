@@ -1,12 +1,7 @@
 import '../styles/global.css';
-import {SocketContextWrapper} from "../components/chess/SocketContext";
 
 function MyApp({ Component, pageProps }) {
-  return (
-    <SocketContextWrapper>
-      <Component {...pageProps} />
-    </SocketContextWrapper>
-  )
+  return <Component {...pageProps} />
 }
 
 export default MyApp
