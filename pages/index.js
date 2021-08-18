@@ -11,6 +11,7 @@ const Home = () => {
   const [isWhiteTurn, setWhiteTurn] = useState(true);
   const [roomId, setRoomId] = useState("");
   const [playerColor, setPlayerColor] = useState(null);
+  const [isJoining, setIsJoining] = useState(false);
 
   const handleTurnChange = () => {
     setWhiteTurn(prevTurn => !prevTurn);
@@ -18,7 +19,8 @@ const Home = () => {
 
   const joinChessRoom = (event) => {
     event.preventDefault();
-    console.log(roomId);
+    setIsJoining(true);
+    // console.log(roomId);
     socket.emit("join_room", roomId);
   }
 
@@ -65,7 +67,7 @@ const Home = () => {
             <form className="flex flex-col justify-center items-center mt-24 space-y-4 md:space-y-6" onSubmit={joinChessRoom}>
               <label htmlFor="roomId">Room Id</label>
               <input type="text" id="roomId" name="roomId" value={roomId} onChange={handleRoomId} className="p-3 rounded-lg font-light"/>
-              <button type="submit" className="bg-blue-50 p-3 lg:p-6 xl:p-8 rounded-lg ">Join Room</button>
+              <button type="submit" disabled={isJoining} className="bg-blue-50 p-3 lg:p-6 xl:p-8 rounded-lg ">{!isJoining ? "Join Room": "Waiting for another player..."}</button>
             </form>
             }
           {(chess && chessBoard) && <Board chessMatrix={chessBoard} chess={chess} isWhiteTurn={isWhiteTurn} handleTurnChange={handleTurnChange} playerColor={playerColor}/>}
