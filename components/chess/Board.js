@@ -1,10 +1,11 @@
 import { useState } from "react"
+import { useSocketContext } from "./SocketContext"
 import BoardLayout from "./BoardLayout"
 import Piece from "./Piece"
 import Tile from "./Tile"
 
 const Board = ({chessMatrix, chess, isWhiteTurn, handleTurnChange}) => {
-
+    const socket = useSocketContext();
     const notMoving = {
         isMoving: false,
         pieceType: null,
@@ -56,10 +57,11 @@ const Board = ({chessMatrix, chess, isWhiteTurn, handleTurnChange}) => {
             }
             console.log("Wanted Move: ", potentialMove);
             const move = chess.move(potentialMove);
-            if (move) { 
+            if (move) {
+                socket.emit("game_update", potentialMove);
                 setPieceIsMoving(notMoving);
                 handleTurnChange();
-                console.log("Chess board: ", chess.board());
+                console.log("Move : ", move);
             } else {
                 setPieceIsMoving(notMoving);
                 console.log("Move not allowed");
@@ -79,6 +81,19 @@ const Board = ({chessMatrix, chess, isWhiteTurn, handleTurnChange}) => {
         return tileColor;
         
     }
+    
+    const handleGameUpdate = (playerMove) => {
+        const move = chess.move(playerMove);
+        console.log("Move: ", move)
+        if (move) {
+            handleTurnChange();
+            console.log("Moved");
+        }
+    }
+
+    socket.on("on_game_update", playerMove => {
+        handleGameUpdate(playerMove);
+    });
     return (
         <>
         <h1 className="text-center text-lg md:text-xl lg:text-2xl xl:text-2xl mt-6 border-b shadow-sm">{isWhiteTurn ? "White's turn" : "Black's turn"}</h1>
