@@ -64,10 +64,10 @@ const Home = () => {
           }
 
           {!chessBoard && 
-            <form className="flex flex-col justify-center items-center mt-24 space-y-4 md:space-y-6" onSubmit={joinChessRoom}>
+            <form className="flex flex-col justify-center items-center mt-24 space-y-4 md:space-y-6 text-xl lg:text-2xl xl:text-3xl font-light" onSubmit={joinChessRoom}>
               <label htmlFor="roomId">Room Id</label>
-              <input type="text" id="roomId" name="roomId" value={roomId} onChange={handleRoomId} className="p-3 rounded-lg font-light"/>
-              <button type="submit" disabled={isJoining} className="bg-blue-50 p-3 lg:p-6 xl:p-8 rounded-lg ">{!isJoining ? "Join Room": "Awaiting player 2..."}</button>
+              <input type="text" id="roomId" name="roomId" value={roomId} onChange={handleRoomId} className="p-3 rounded-lg font-light border border-blue-900" placeholder="Enter Room Id"/>
+              <button type="submit" disabled={isJoining} className="bg-blue-50 p-3 lg:p-6 rounded-lg font-light">{!isJoining ? "Join Room": "Awaiting player 2..."}</button>
             </form>
             }
           {(chess && chessBoard) && <Board chessMatrix={chessBoard} chess={chess} isWhiteTurn={isWhiteTurn} handleTurnChange={handleTurnChange} playerColor={playerColor}/>}
