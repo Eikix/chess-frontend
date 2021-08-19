@@ -128,7 +128,7 @@ const Board = ({chessMatrix, chess, isWhiteTurn, handleTurnChange, playerColor})
 
  
     return (
-        <>
+        <div>
         <h3 className="text-center text-lg md:text-xl lg:text-2xl xl:text-2xl mt-6 border-b shadow-sm">{isWhiteTurn ? "White's turn" : "Black's turn"}</h3>
         <h3 className="text-center text-md md:text-lg lg:text-xl xl:text-xl mt-3 border-b shadow-sm">{`You are playing ${playerColor}`}</h3>
         <BoardLayout >
@@ -147,7 +147,7 @@ const Board = ({chessMatrix, chess, isWhiteTurn, handleTurnChange, playerColor})
                 )
             })}
         </BoardLayout>
-        </>
+        </div>
     )
 }
 
