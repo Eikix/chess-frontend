@@ -1,9 +1,9 @@
-const BoardLayout = ({ children }) => {
+const BoardLayout = ({children}) => {
     return (
-        <div className="h-full grid grid-cols-10 px-1 py-16 sm:px-3 md:px-32 lg:px-46 xl:px-80">
+        <div className="h-full grid grid-cols-8 px-3 py-16 md:px-32 lg:px-46 xl:px-80">
             {children}
         </div>
-    );
-};
+    )
+}
 
-export default BoardLayout;
+export default BoardLayout
